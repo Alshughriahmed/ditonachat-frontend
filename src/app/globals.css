@@ -1,0 +1,93 @@
+:root {
+  --bg-dark: #000000;
+  --overlay: rgba(0,0,0,0.55);
+  --text-light: #f3f3f3;
+  --accent: #ec4899;
+}
+
+/* reset مختصر */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--bg-dark);color:var(--text-light);
+  font-family: Arial,Helvetica,sans-serif;height:100vh;overflow:hidden;
+}
+
+/* خلفية وتراك */
+.bg-img{position:fixed;inset:0;background-size:cover;background-position:center;z-index:-10}
+.bg-overlay{position:fixed;inset:0;background:var(--overlay);z-index:-5}
+
+/* الشعار */
+.logo-fixed{position:absolute;top:20px;left:20px;width:80px;z-index:20}
+.lang-fixed{position:absolute;top:20px;right:20px;z-index:20;background:rgba(0,0,0,0.7);color:#fff;border:1px solid #fff;border-radius:4px;padding:4px 8px}
+
+/* صندوق مركزي */
+.center-container{display:flex;align-items:center;justify-content:center;height:100vh;width:100vw;position:relative;z-index:10}
+.center-box{width:340px;background:rgba(0,0,0,0.82);padding:24px;border-radius:12px;text-align:center;border:1px solid rgba(255,255,255,0.2)}
+.center-box h1{font-size:1.8rem;color:#FFF8E7;margin-bottom:8px}
+.center-box .tagline{color:#FF79C6;margin-bottom:10px}
+.center-box .cta{font-size:1.1rem;color:#FF4C4C;margin-bottom:16px;font-weight:bold}
+.center-box select{width:100%;padding:8px;margin-bottom:14px;border-radius:6px;border:none;background:#222;color:#fff}
+.center-box .age{display:flex;align-items:center;justify-content:center;color:#ddd;font-size:0.85rem;margin-bottom:14px}
+.center-box .age input{margin-right:6px}
+.center-box button{width:100%;padding:12px;background:var(--accent);border:none;border-radius:6px;color:#fff;font-weight:bold;cursor:pointer;margin-bottom:12px}
+.center-box p.policy{font-size:0.72rem;color:#ccc}
+.center-box p.policy a{color:#fff;text-decoration:underline}
+.center-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+}
+
+.center-box {
+  width: 340px;
+  background: rgba(0,0,0,0.82);
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.2);
+  position: relative;
+  z-index: 10;
+}
+
+.start-btn {
+  width: 100%;
+  padding: 12px;
+  background: #ec4899;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 12px 0;
+}
+
+.start-btn.disabled {
+  background: #777;
+  cursor: not-allowed;
+}
+
+.policy-links {
+  font-size: 0.75rem;
+  color: #ccc;
+  margin-top: 8px;
+}
+
+.policy-links a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.big-logo {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  max-width: 600px;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 5;
+}
