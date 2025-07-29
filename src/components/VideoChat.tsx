@@ -28,7 +28,7 @@ const VideoChat = () => {
   };
 
   useEffect(() => {
-socket.current = io('https://ditonachat-backend.onrender.com', {
+socket.current = io('https://kkh7ikcl85ln.manus.space', {
   path: '/ws',
   transports: ['websocket'],
 });
