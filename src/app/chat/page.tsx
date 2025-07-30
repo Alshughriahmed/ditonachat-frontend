@@ -9,23 +9,24 @@ export default function ChatPage() {
   const [status, setStatus] = useState('🟡 Connecting…');
 
   useEffect(() => {
-    socketRef.current = io('https://kkh7ikcl85ln.manus.space', {
-      path: '/ws',
+    const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'https://kkh7ikcl85ln.manus.space';
+    const WS_PATH = process.env.NEXT_PUBLIC_WS_PATH || '/ws';
+
+    socketRef.current = io(WS_URL, {
+      path: WS_PATH,
       transports: ['websocket'],
       reconnection: true,
     });
-
-    (window as any).socket = socketRef.current;
 
     socketRef.current.on('connect', () => {
       setStatus(`🟢 Connected (id=${socketRef.current?.id})`);
     });
 
-    socketRef.current.on('disconnect', reason => {
+    socketRef.current.on('disconnect', () => {
       setStatus('🔴 Disconnected');
     });
 
-    socketRef.current.on('connect_error', err => {
+    socketRef.current.on('connect_error', () => {
       setStatus('❌ Connect error');
     });
 
@@ -35,11 +36,23 @@ export default function ChatPage() {
   }, []);
 
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    // تأكد من وجود getUserMedia قبل الاستدعاء
+    if (!navigator.mediaDevices?.getUserMedia) {
+      console.warn('getUserMedia غير مدعوم في هذا السياق');
+      setStatus('⚠️ بث الفيديو غير مدعوم هنا');
+      return;
+    }
+
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
       .then(stream => {
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream;
         }
+      })
+      .catch(err => {
+        console.error('خطأ في الحصول على الميديا:', err);
+        setStatus('❌ خطأ في الوصول إلى الكاميرا/الميكروفون');
       });
   }, []);
 
@@ -48,31 +61,39 @@ export default function ChatPage() {
   };
 
   return (
-    <div style={{ background: '#111', color: '#fff', height: '100vh', padding: '2rem', position: 'relative' }}>
+    <div style={{ background: '#111', color: '#fff', height: '100vh', padding: '2rem' }}>
       <h1>🎥 دردشة فيديو</h1>
-      <video ref={localVideoRef} autoPlay muted playsInline style={{
-        position: 'absolute',
-        bottom: '20px',
-        right: '20px',
-        width: '220px',
-        height: '160px',
-        borderRadius: '10px',
-        border: '3px solid #00ff88',
-        backgroundColor: '#000',
-      }} />
+      <video
+        ref={localVideoRef}
+        autoPlay
+        muted
+        playsInline
+        style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          width: '220px',
+          height: '160px',
+          borderRadius: '10px',
+          border: '3px solid #00ff88',
+          backgroundColor: '#000',
+        }}
+      />
       <p style={{ marginTop: '1rem' }}>{status}</p>
-      <button onClick={sendTest} style={{
-        marginTop: '2rem',
-        padding: '10px 20px',
-        fontSize: '1rem',
-        backgroundColor: '#00cc88',
-        border: 'none',
-        borderRadius: '8px',
-        cursor: 'pointer'
-      }}>
+      <button
+        onClick={sendTest}
+        style={{
+          marginTop: '2rem',
+          padding: '10px 20px',
+          fontSize: '1rem',
+          backgroundColor: '#00cc88',
+          border: 'none',
+          borderRadius: '8px',
+          cursor: 'pointer',
+        }}
+      >
         🚀 Send Test Message
       </button>
     </div>
   );
 }
-

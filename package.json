@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --no-lint",
-    "start": "next start"
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "deploy:fix": "node auto-deploy-fix.js"
   },
   "dependencies": {
     "next": "15.4.2",
@@ -15,11 +17,13 @@
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "20.4.2",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
+    "serve": "^14.2.4",
     "tailwindcss": "^4.1.11",
     "typescript": "5.1.3"
   }
