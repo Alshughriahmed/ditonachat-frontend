@@ -1,8 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Custom CSS from the original documentation */
+}
 :root {
   --bg-dark: #000000;
   --overlay: rgba(0,0,0,0.55);
@@ -11,12 +10,13 @@
 }
 
 *,*::before,*::after{box-sizing:border-box; margin:0;padding:0}
+
 body {
   background: var(--bg-dark);
   color: var(--text-light);
   font-family: Arial, Helvetica, sans-serif;
   height: 100vh;
-  overflow: hidden; /* This might hide scrollbars, be aware */
+  overflow: hidden;
 }
 
 .bg-img {
@@ -70,7 +70,6 @@ body {
   margin-bottom: 8px;
 }
 
-/* This targets select and checkbox directly, might be overridden by Tailwind */
 .center-box select, .center-box input[type="checkbox"] {
   margin-top: 10px;
 }
@@ -82,25 +81,9 @@ body {
   border-radius: 6px;
   color: white;
   font-weight: bold;
-  cursor: pointer; /* Added for better UX */
 }
 
 .start-btn.disabled {
   background: #777;
   cursor: not-allowed;
-}
-
-/* Add any other specific global styles you need that are not Tailwind classes */
-
-/* Styles for chat page if they were in globals.css, otherwise ignore */
-/* Example for the local video box, if not handled by Tailwind classes in the component */
-.local-video-box {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    width: 220px;
-    height: 160px;
-    border-radius: 10px;
-    border: 3px solid #00ff88;
-    background-color: #000;
 }
