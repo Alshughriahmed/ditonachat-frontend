@@ -1,7 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-}
+
+/* Custom CSS from the original documentation */
 :root {
   --bg-dark: #000000;
   --overlay: rgba(0,0,0,0.55);
