@@ -1,3 +1,106 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom CSS from the original documentation */
+:root {
+  --bg-dark: #000000;
+  --overlay: rgba(0,0,0,0.55);
+  --text-light: #f3f3f3;
+  --accent: #ec4899;
+}
+
+*,*::before,*::after{box-sizing:border-box; margin:0;padding:0}
+body {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100vh;
+  overflow: hidden; /* This might hide scrollbars, be aware */
+}
+
+.bg-img {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: -10;
+}
+
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  z-index: -5;
+}
+
+.logo-fixed {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 80px;
+  z-index: 20;
+}
+
+.lang-fixed {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+}
+
+.center-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.center-box {
+  width: 340px;
+  background: rgba(0,0,0,0.82);
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.center-box h1 {
+  font-size: 1.8rem;
+  color: #FFF8E7;
+  margin-bottom: 8px;
+}
+
+/* This targets select and checkbox directly, might be overridden by Tailwind */
+.center-box select, .center-box input[type="checkbox"] {
+  margin-top: 10px;
+}
+
+.start-btn {
+  background: var(--accent);
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer; /* Added for better UX */
+}
+
+.start-btn.disabled {
+  background: #777;
+  cursor: not-allowed;
+}
+
+/* Add any other specific global styles you need that are not Tailwind classes */
+
+/* Styles for chat page if they were in globals.css, otherwise ignore */
+/* Example for the local video box, if not handled by Tailwind classes in the component */
+.local-video-box {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 220px;
+    height: 160px;
+    border-radius: 10px;
+    border: 3px solid #00ff88;
+    background-color: #000;
+}
