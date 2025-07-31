@@ -22,18 +22,19 @@ export default function ChatPage() {
 
   useEffect(() => {
     // Initialize Socket.IO
-    socketRef.current = io(signalingServerUrl, {
+    const socket = io(signalingServerUrl, {
       path: '/ws',
       transports: ['websocket'],
       reconnection: true,
     });
+    socketRef.current = socket;
 
-    socketRef.current.on('connect', () => {
+    socket.on('connect', () => {
       setStatus('🟢 Connected. Waiting for partner...');
       setError(null);
     });
 
-    socketRef.current.on('disconnect', (reason) => {
+    socket.on('disconnect', (reason) => {
       setStatus('🔴 Disconnected: ' + reason);
       if (peerConnectionRef.current) {
         peerConnectionRef.current.close();
@@ -44,13 +45,13 @@ export default function ChatPage() {
       }
     });
 
-    socketRef.current.on('connect_error', (err) => {
+    socket.on('connect_error', (err) => {
       setStatus('❌ Connection Error');
       setError(`Failed to connect to signaling server: ${err.message}`);
       console.error('Socket.IO connection error:', err);
     });
 
-    socketRef.current.on('partner', async ({ partnerId, isInitiator }: { partnerId: string, isInitiator: boolean }) => {
+    socket.on('partner', async ({ partnerId, isInitiator }: { partnerId: string, isInitiator: boolean }) => {
       setStatus(`Partner found: ${partnerId}. ${isInitiator ? 'Initiating call...' : 'Receiving call...'}`);
       setError(null);
 
@@ -80,43 +81,42 @@ export default function ChatPage() {
       // Handle ICE candidates
       peerConnectionRef.current.onicecandidate = (event) => {
         if (event.candidate) {
-          socketRef.current?.emit('ice-candidate', { target: partnerId, candidate: event.candidate });
+          socket.emit('ice-candidate', { target: partnerId, candidate: event.candidate });
         }
       };
 
       if (isInitiator) {
         const offer = await peerConnectionRef.current.createOffer();
         await peerConnectionRef.current.setLocalDescription(offer);
-        socketRef.current?.emit('offer', { target: partnerId, offer });
+        socket.emit('offer', { target: partnerId, offer });
       }
 
-      if (socketRef.current) {
-        socketRef.current.on('offer', async ({ offer }) => {
+      socket.on('offer', async ({ offer }) => {
         if (peerConnectionRef.current) {
           await peerConnectionRef.current.setRemoteDescription(new RTCSessionDescription(offer));
           const answer = await peerConnectionRef.current.createAnswer();
           await peerConnectionRef.current.setLocalDescription(answer);
-          socketRef.current?.emit('answer', { target: partnerId, answer });
+          socket.emit('answer', { target: partnerId, answer });
         }
       });
 
-      socketRef.current.on('answer', async ({ answer }) => {
+      socket.on('answer', async ({ answer }) => {
         if (peerConnectionRef.current) {
           await peerConnectionRef.current.setRemoteDescription(new RTCSessionDescription(answer));
         }
       });
 
-      socketRef.current.on('ice-candidate', async ({ candidate }) => {
+      socket.on('ice-candidate', async ({ candidate }) => {
         if (peerConnectionRef.current) {
           await peerConnectionRef.current.addIceCandidate(new RTCIceCandidate(candidate));
         }
       });
 
-      socketRef.current.on('chat-message', (message: string) => {
+      socket.on('chat-message', (message: string) => {
         setMessages((prevMessages) => [...prevMessages, `Partner: ${message}`]);
       });
 
-      socketRef.current.on('partner-disconnected', () => {
+      socket.on('partner-disconnected', () => {
         setStatus('Partner disconnected. Waiting for new partner...');
         if (peerConnectionRef.current) {
           peerConnectionRef.current.close();
@@ -129,7 +129,7 @@ export default function ChatPage() {
     });
 
     return () => {
-      socketRef.current?.disconnect();
+      socket.disconnect();
     };
   }, [signalingServerUrl]);
 
@@ -272,6 +272,5 @@ export default function ChatPage() {
     </div>
   );
 }
-
 
 
