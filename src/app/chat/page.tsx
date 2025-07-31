@@ -90,7 +90,8 @@ export default function ChatPage() {
         socketRef.current?.emit('offer', { target: partnerId, offer });
       }
 
-      socketRef.current.on('offer', async ({ offer }) => {
+      if (socketRef.current) {
+        socketRef.current.on('offer', async ({ offer }) => {
         if (peerConnectionRef.current) {
           await peerConnectionRef.current.setRemoteDescription(new RTCSessionDescription(offer));
           const answer = await peerConnectionRef.current.createAnswer();
