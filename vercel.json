@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://ditonachat-backend.onrender.com/api/$1"
+    }
+  ]
+}
+
